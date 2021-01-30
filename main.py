@@ -22,6 +22,10 @@ def home():
 
 
 def generate_code(input):
+    """
+    :param input: collection of uppercase and lowercase letters, numbers and '_'
+    :return: random 6 character alphaumeric code
+    """
     code = random.choices(input, k=6)
     code = "".join(code)
     return code
@@ -31,6 +35,13 @@ def generate_code(input):
 async def short_url(url: str = Body(..., embed=True, example="https://www.example.com"),
                     shortcode: Optional[str] = None,
                     db: Session = Depends(get_db)):
+    """
+
+    :param url: required, string type
+    :param shortcode: optional, 6 character, string type
+    :param db: connection to database
+    :return: JSON response {URL, SHORTCODE}
+    """
     obj = UrlModel()
     VALID_SC_INPUT = string.ascii_letters + string.digits + '_'
     shortcode_len = 6
@@ -88,6 +99,12 @@ async def short_url(url: str = Body(..., embed=True, example="https://www.exampl
 
 @app.get("/{shortcode}", status_code=status.HTTP_302_FOUND)
 def redirect(shortcode: str = None, db: Session = Depends(get_db)):
+    """
+
+    :param shortcode: GET request for existing shortcode
+    :param db: connection to database
+    :return: HTTP status 302 with JSON response {URL location header}
+    """
     url_sc = db.query(UrlModel).filter_by(shortcode=shortcode).first()
 
     if url_sc is None:
@@ -107,6 +124,11 @@ def redirect(shortcode: str = None, db: Session = Depends(get_db)):
 
 @app.get("/{shortcode}/stats")
 def shortcode_stats(shortcode: str = None, db: Session = Depends(get_db)):
+    """
+    GET request to query shortcode statistics
+
+    :return: JSON response {creation datetime, last redirect datetime, redirect count}
+    """
     url_sc = db.query(UrlModel).filter_by(shortcode=shortcode).first()
 
     if url_sc is None:
