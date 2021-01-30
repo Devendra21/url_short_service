@@ -1,12 +1,11 @@
 import random
 import string
-import requests
+# import requests
 from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi import FastAPI, Body, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
-from pydantic import HttpUrl
 from sqlalchemy.orm import Session
 
 from db.database import engine, get_db, Base
@@ -29,16 +28,18 @@ def generate_code(input):
 
 
 @app.post("/shorten", status_code=201)
-async def short_url(url: HttpUrl = Body(..., embed=True, example="https://www.example.com"),
+async def short_url(url: str = Body(..., embed=True, example="https://www.example.com"),
                     shortcode: Optional[str] = None,
                     db: Session = Depends(get_db)):
     obj = UrlModel()
     VALID_SC_INPUT = string.ascii_letters + string.digits + '_'
     shortcode_len = 6
 
-    request = requests.get(url)
-    if request.status_code != 200:
+    if url is "":
         raise HTTPException(status_code=400, detail="URL not present")
+    # request = requests.get(url)
+    # if request.status_code != 200:
+    #     raise HTTPException(status_code=400, detail="URL not present")
 
     url_link = db.query(UrlModel).filter_by(original_url=url).first()
     if url_link:
