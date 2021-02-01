@@ -36,6 +36,13 @@ In the terminal, run command `pip install -r requirements.txt`
 - The [link](http://127.0.0.1:8000) redirects to the automatic interactive API documentation rendered by Swagger UI
 
 ## Running unit tests
+Unit tests for testing the service endpoints are written with `fastapi.testclient` and are tested using pytest.
+
+To test the app, enter `$pytest` command in the terminal window. Once the tests are successfully run, you will see the following message:
+
+![Test results](/images/pytest.PNG "Test results")
+
+## Running unit tests (alternative)
 
 The API documentation allows us to interact with the `GET` and `POST` methods of the webservice.
 
@@ -70,10 +77,10 @@ The API documentation allows us to interact with the `GET` and `POST` methods of
 
 ## TODO:
 
-- Write tests for the app using `fastapi.testclient` and test using `pytest`
+- ~~Write tests for the app using `fastapi.testclient` and test using `pytest`.~~
 
 - Create UI using Jinja2 templates
 
 - Improve `GET/{shortcode}` method: currently response contains '302 Error:Found'
 
-- Add validator for URL in `POST/shorten` method
+- ~~Add validator for URL in `POST/shorten` method~~
