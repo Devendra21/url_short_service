@@ -63,7 +63,7 @@ async def short_url(url: str = Body(..., embed=True, example="https://www.exampl
         # First check valid format of the shortcode
         if len(shortcode) > shortcode_len or len(shortcode) < shortcode_len:
             raise HTTPException(status_code=412,
-                                detail="The provided shortcode is invalid (Length of shortcode should be 6")
+                                detail="The provided shortcode is invalid (Length of shortcode should be 6)")
 
         for c in shortcode:
             if c not in VALID_SC_INPUT:
